@@ -1373,7 +1373,7 @@ void connection<config>::handle_read_http_response(lib::error_code const & ec,
         if (ec == websocketpp::transport::error::eof) {
           m_response.consume(m_buf,0);
           if (m_message_handler) {
-            m_message_handler(m_connection_hdl, nullptr);
+            m_message_handler(m_connection_hdl, message_ptr());
           }
         }
 
@@ -1435,7 +1435,7 @@ void connection<config>::handle_read_http_response(lib::error_code const & ec,
     } else {
         if (m_response.ready()) {
           if (m_message_handler) {
-            m_message_handler(m_connection_hdl, nullptr);
+            m_message_handler(m_connection_hdl, message_ptr());
           }
         }
         else { 

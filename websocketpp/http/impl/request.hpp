@@ -115,16 +115,22 @@ inline size_t request::consume(const char *buf, size_t len) {
                 throw exception("Incomplete Request",status_code::bad_request);
             }
 
-            if (m_method == "POST") {
+            if (m_method == "POST" || m_method == "PUT") {
                 const std::string& s = get_header("Content-Length");
-                if (! s.empty()) m_content_length = atoi(s.c_str()); 
-                if (m_content_length < 0) m_content_length = -1;
-                m_body.assign(end + sizeof(header_delimiter) - 1, m_buf->end());
-
-                if (m_body.size() >= m_content_length) m_ready = true;
-                return len;
+                if (s.empty())
+                    m_content_length = 0;
+                else
+                {
+                    m_content_length = atoi(s.c_str()); 
+                    if (m_content_length < 0) m_content_length = -1;
+                    m_body.assign(end + sizeof(header_delimiter) - 1, m_buf->end());
+    
+                    if (m_body.size() >= m_content_length) m_ready = true;
+                    return len;
+                }
             }
-            else {
+            else
+            {
                 m_content_length = 0;
             }
 

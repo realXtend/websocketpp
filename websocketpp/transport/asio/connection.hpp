@@ -935,9 +935,9 @@ protected:
 		// Reset cached handlers now that we won't be reading or writing anymore
 		// These cached handlers store shared pointers to this connection and will leak
 		// the connection if not destroyed.
-		m_async_read_handler = _WEBSOCKETPP_NULLPTR_TOKEN_;
-		m_async_write_handler = _WEBSOCKETPP_NULLPTR_TOKEN_;
-		m_init_handler = _WEBSOCKETPP_NULLPTR_TOKEN_;
+		m_async_read_handler = async_read_handler();
+		m_async_write_handler = async_write_handler();
+		m_init_handler = init_handler();
 
         timer_ptr shutdown_timer;
         shutdown_timer = set_timer(
